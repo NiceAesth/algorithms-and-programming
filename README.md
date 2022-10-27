@@ -1,3 +1,3 @@
 # Algoritmi si Programare
 
-Only run pytest in each project's directory
+Run pytest and mypy in the project directories
