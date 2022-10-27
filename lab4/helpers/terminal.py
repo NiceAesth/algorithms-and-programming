@@ -35,7 +35,11 @@ def read_complex(text: str = "") -> ComplexNumber:
 def read_subseq(list: list) -> list:
     start = read_int("Enter the start position: ")
     end = read_int("Enter the end position: ")
-    return list[start:end]
+    try:
+        return list[start:end]
+    except:
+        print("Invalid start and end provided. Try again.")
+        return read_subseq(list)
 
 
 def print_wait(*args: Any, **kwargs: Any) -> None:
