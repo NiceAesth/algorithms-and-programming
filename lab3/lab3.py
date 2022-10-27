@@ -1,5 +1,6 @@
 # 11, 12
 from __future__ import annotations
+
 import os
 from typing import Callable
 
@@ -19,7 +20,7 @@ def check_equal(x: int, y: int) -> bool:
     return x == y
 
 
-def longest_cond_subseq(seq: list, check: Callable) -> "(int, int)":
+def longest_cond_subseq(seq: list, check: Callable) -> (int, int):
     """Finds the longest subsequence that respects a given check.
     seq - list
     check - Callable(x, y) -> bool, function to check adjacent elements
@@ -44,7 +45,7 @@ def longest_cond_subseq(seq: list, check: Callable) -> "(int, int)":
     return max_pos, max_len
 
 
-def longest_sum_subseq(seq) -> "(list, int)":
+def longest_sum_subseq(seq) -> (list, int):
     """Finds the longest subsequence of the maximum size.
     seq - list
     Return (subseq, max_len) - List containing the subsequence elements, sum of the subseq elements

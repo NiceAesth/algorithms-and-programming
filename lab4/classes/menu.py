@@ -1,10 +1,13 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 from typing import Callable
 
-from helpers import terminal
-from helpers import numbers
 from helpers import data
-from . import ComplexManager
+from helpers import numbers
+from helpers import terminal
+
+from .complexmanager import ComplexManager
 
 __all__ = ["MenuOption", "Menu"]
 
@@ -31,8 +34,8 @@ class Menu:
     """Menu class"""
 
     def __init__(self) -> None:
-        self.manager = ComplexManager()
-        self.__options = []
+        self.manager: ComplexManager = ComplexManager()
+        self.__options: list[MenuOption] = []
         self.__populate_options()
 
     def __populate_options(self) -> None:
@@ -41,15 +44,15 @@ class Menu:
             MenuOption(
                 "Load sample data",
                 lambda: self.manager.load_json(data.load_sample()),
-            )
+            ),
         )
         self.__options.append(
             MenuOption(
                 "Append a complex number to the list",
                 lambda: self.manager.add_number(
-                    terminal.read_complex("Enter the number: ")
+                    terminal.read_complex("Enter the number: "),
                 ),
-            )
+            ),
         )
         self.__options.append(
             MenuOption(
@@ -58,15 +61,15 @@ class Menu:
                     terminal.read_complex("Enter the number: "),
                     terminal.read_int("Enter the position: "),
                 ),
-            )
+            ),
         )
         self.__options.append(
             MenuOption(
                 "Remove a complex number from the list",
                 lambda: self.manager.remove_pos_number(
-                    terminal.read_int("Enter the position of the number: ")
+                    terminal.read_int("Enter the position of the number: "),
                 ),
-            )
+            ),
         )
         self.__options.append(
             MenuOption(
@@ -75,7 +78,7 @@ class Menu:
                     terminal.read_int("Enter the start position: "),
                     terminal.read_int("Enter the end position: "),
                 ),
-            )
+            ),
         )
         self.__options.append(
             MenuOption(
@@ -84,28 +87,28 @@ class Menu:
                     terminal.read_complex("Enter the number to be replaced: "),
                     terminal.read_complex("Enter the replacement: "),
                 ),
-            )
+            ),
         )
         self.__options.append(
             MenuOption(
                 "Print the imaginary part of elements in a subsequence",
-                lambda: [x.imag for x in terminal.read_subseq(self.manager.list)],
+                lambda: [x.imag for x in terminal.read_subseq(self.manager.nlist)],
                 True,
-            )
+            ),
         )
         self.__options.append(
             MenuOption(
                 "Print all elements with an abs lower than 10",
                 lambda: self.manager.get_by_check(lambda x: abs(x) < 10),
                 True,
-            )
+            ),
         )
         self.__options.append(
             MenuOption(
                 "Print all elements with an abs equal to 10",
                 lambda: self.manager.get_by_check(lambda x: abs(x) == 10),
                 True,
-            )
+            ),
         )
         self.__options.append(
             MenuOption(
@@ -115,7 +118,7 @@ class Menu:
                     terminal.read_int("Enter the end position: "),
                 ),
                 True,
-            )
+            ),
         )
         self.__options.append(
             MenuOption(
@@ -125,22 +128,22 @@ class Menu:
                     terminal.read_int("Enter the end position: "),
                 ),
                 True,
-            )
+            ),
         )
         self.__options.append(
             MenuOption(
                 "Print the list sorted by the imaginary part descending",
-                lambda: sorted(self.manager.list, reverse=True, key=lambda x: x.imag),
+                lambda: sorted(self.manager.nlist, reverse=True, key=lambda x: x.imag),
                 True,
-            )
+            ),
         )
         self.__options.append(
             MenuOption(
                 "Filter numbers with a prime real part",
                 lambda: self.manager.filter_by_check(
-                    lambda x: not numbers.check_prime(x.real)
+                    lambda x: not numbers.check_prime(x.real),
                 ),
-            )
+            ),
         )
         self.__options.append(
             MenuOption(
@@ -149,7 +152,7 @@ class Menu:
                     chk := terminal.read_int("Enter the number: "),
                     self.manager.filter_by_check(lambda x: abs(x) > chk),
                 ),
-            )
+            ),
         )
         self.__options.append(
             MenuOption(
@@ -158,7 +161,7 @@ class Menu:
                     chk := terminal.read_int("Enter the number: "),
                     self.manager.filter_by_check(lambda x: abs(x) != chk),
                 ),
-            )
+            ),
         )
         self.__options.append(
             MenuOption(
@@ -167,19 +170,19 @@ class Menu:
                     chk := terminal.read_int("Enter the number: "),
                     self.manager.filter_by_check(lambda x: abs(x) < chk),
                 ),
-            )
+            ),
         )
         self.__options.append(
             MenuOption(
                 "Undo the last change to the list",
                 self.manager.undo,
-            )
+            ),
         )
         self.__options.append(
             MenuOption(
                 "Exit",
                 exit,
-            )
+            ),
         )
 
     def __get_menu_text(self) -> str:

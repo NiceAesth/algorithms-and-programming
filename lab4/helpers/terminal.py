@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 import os
+from typing import Any
 
 from classes.complexnumber import ComplexNumber
 
@@ -31,6 +34,6 @@ def read_subseq(list: list) -> list:
     return list[start:end]
 
 
-def print_wait(*args, **kwargs) -> None:
+def print_wait(*args: Any, **kwargs: Any) -> None:
     print(*args, **kwargs)
     input()

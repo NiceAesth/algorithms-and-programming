@@ -1,8 +1,11 @@
+from __future__ import annotations
+
 import math
+
 from classes import ComplexNumber
 
 
-def test_eq():
+def test_eq() -> None:
     """
     +--------------------------------------------+--------+
     |                Input (x, y)                | Output |
@@ -19,7 +22,7 @@ def test_eq():
     assert ComplexNumber(1, 0) != 0
 
 
-def test_lt():
+def test_lt() -> None:
     """
     +--------------------------------------------+--------+
     |                Input (x, y)                | Output |
@@ -37,7 +40,7 @@ def test_lt():
     assert a <= a
 
 
-def test_gt():
+def test_gt() -> None:
     """
     +--------------------------------------------+--------+
     |                Input (x, y)                | Output |
@@ -55,7 +58,7 @@ def test_gt():
     assert a >= a
 
 
-def test_add():
+def test_add() -> None:
     """
     +-------------------------------------------+----------------------+
     |               Input (x, y)                |        Output        |
@@ -71,7 +74,7 @@ def test_add():
     assert a + d == ComplexNumber(6, 5)
 
 
-def test_subtract():
+def test_subtract() -> None:
     """
     +-------------------------------------------+----------------------+
     |               Input (x, y)                |        Output        |
@@ -87,7 +90,7 @@ def test_subtract():
     assert a - d == ComplexNumber(4, 1)
 
 
-def test_floordiv():
+def test_floordiv() -> None:
     """
     +---------------------------------------------+----------------------+
     |                Input (x, y)                 |        Output        |
@@ -103,7 +106,7 @@ def test_floordiv():
     assert a // d == ComplexNumber(4, -1)
 
 
-def test_truediv():
+def test_truediv() -> None:
     """
     +--------------------------------------------+---------------------+
     |                Input (x, y)                |       Output        |
@@ -119,7 +122,7 @@ def test_truediv():
     assert a / d == ComplexNumber(5, 0)
 
 
-def test_multiply():
+def test_multiply() -> None:
     """
     +--------------------------------------------+------------------------+
     |                Input (x, y)                |         Output         |
@@ -135,7 +138,7 @@ def test_multiply():
     assert a * d == ComplexNumber(120, 50)
 
 
-def test_abs():
+def test_abs() -> None:
     """
     +----------------------+-------------+
     |      Input (x)       |   Output    |
@@ -158,7 +161,7 @@ def test_abs():
     assert abs(d) == 5
 
 
-def test_int():
+def test_int() -> None:
     """
     +----------------------+-------------+
     |      Input (x)       |   Output    |
@@ -181,7 +184,7 @@ def test_int():
     assert int(d) == 5
 
 
-def test_round():
+def test_round() -> None:
     """
     +---------------------------+------------------------------------------+
     |         Input (x)         |                  Output                  |
@@ -197,7 +200,7 @@ def test_round():
     assert round(a, 2) == ComplexNumber(5.32, 2.13)
 
 
-def test_floor():
+def test_floor() -> None:
     """
     +---------------------------+---------------------------------+
     |         Input (x)         |             Output              |
@@ -209,19 +212,7 @@ def test_floor():
     assert math.floor(a) == ComplexNumber(5, 2)
 
 
-def test_trunc():
-    """
-    +---------------------------+---------------------------------+
-    |         Input (x)         |             Output              |
-    +---------------------------+---------------------------------+
-    | ComplexNumber(5.32, 2.13) | trunc(x) == ComplexNumber(5, 2) |
-    +---------------------------+---------------------------------+
-    """
-    a = ComplexNumber(5.32, 2.13)
-    assert math.trunc(a) == ComplexNumber(5, 2)
-
-
-def test_ceil():
+def test_ceil() -> None:
     """
     +---------------------------+--------------------------------+
     |         Input (x)         |             Output             |

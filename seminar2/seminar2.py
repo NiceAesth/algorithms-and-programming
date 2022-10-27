@@ -1,5 +1,7 @@
 # Sa se calculeze secventa de lungime maxima care contine doar numere pare
 # Sa se calculeze secventa de lungime maxima in care ultima cifra este egala cu 7
+from __future__ import annotations
+
 from typing import Callable
 
 

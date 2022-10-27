@@ -1,4 +1,7 @@
 # Ex 2
+from __future__ import annotations
+
+
 def tema_ex_2():
     import datetime
 

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from math import sqrt
 
 
@@ -15,6 +17,7 @@ def next_prime(n: int):
         n += 1
         if check_prime(n):
             return n
+
 
 def next_k_primes(n: int, k: int):
     primes = []

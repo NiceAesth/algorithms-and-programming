@@ -1,22 +1,26 @@
 from __future__ import annotations
-from typing import Any, Callable
-from . import ComplexNumber, ComplexType
+
+from typing import Any
+from typing import Callable
+
+from .complexnumber import ComplexNumber
+from .complexnumber import ComplexType
 
 __all__ = ["ComplexManager"]
 
 
 class ComplexManager:
     def __init__(self) -> None:
-        self._list = list()
-        self._prev = list()
+        self._list: list[ComplexNumber] = []
+        self._prev: list[ComplexNumber] = []
 
     @property
-    def list(self):
+    def nlist(self) -> list[ComplexNumber]:
         """List of ComplexNumber types"""
         return self._list
 
     @property
-    def count(self):
+    def count(self) -> int:
         """Number of elements in _list"""
         return len(self._list)
 
@@ -25,7 +29,7 @@ class ComplexManager:
         self._list = self._prev.copy()
 
     @staticmethod
-    def updates_list(func) -> function:
+    def updates_list(func: Callable) -> function:
         """Function wrapper for undo functionality. Use on functions which modify _list
 
         Args:
@@ -35,7 +39,7 @@ class ComplexManager:
             function: wrapped function with _prev updating
         """
 
-        def _updates_list(*args, **kwargs) -> Any:
+        def _updates_list(*args: Any, **kwargs: Any) -> Any:
             args[0]._prev = args[0]._list.copy()
             return func(*args, **kwargs)
 
@@ -53,14 +57,14 @@ class ComplexManager:
             self._list.append(ComplexNumber(*x))
 
     @updates_list
-    def add_number(self, x: ComplexType, pos: int = -1) -> None:
+    def add_number(self, __o: ComplexType, pos: int = -1) -> None:
         """Adds a number to _list
 
         Args:
             x (ComplexType): value to be added
             pos (int, optional): position to insert in. Defaults to appending to the list.
         """
-        x = ComplexNumber.from_type(x)
+        x: ComplexNumber = ComplexNumber.from_type(__o)
         if pos < 0:
             pos = len(self._list)
         self._list.insert(pos, x)
@@ -85,15 +89,15 @@ class ComplexManager:
         del self._list[start:end]
 
     @updates_list
-    def replace_number(self, x: ComplexType, y: ComplexType) -> None:
+    def replace_number(self, __o1: ComplexType, __o2: ComplexType) -> None:
         """Replaces a number in _list
 
         Args:
             x (ComplexType): number to be replaced
             y (ComplexType): number to replace with
         """
-        x = ComplexNumber.from_type(x)
-        y = ComplexNumber.from_type(y)
+        x: ComplexNumber = ComplexNumber.from_type(__o1)
+        y: ComplexNumber = ComplexNumber.from_type(__o2)
         self._list = [y if i == x else i for i in self._list]
 
     def get_by_check(self, check: Callable) -> list[ComplexNumber]:

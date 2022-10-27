@@ -1,12 +1,15 @@
+from __future__ import annotations
+
 import pytest
-from classes import ComplexManager, ComplexNumber, ComplexType
+from classes import ComplexManager
+from classes import ComplexNumber
 
 
-def check_abs(x: ComplexType):
+def check_abs(x: ComplexNumber) -> bool:
     """Simple function to check if abs(x) < 10
 
     Args:
-        x (ComplexType): number to be checked
+        x (ComplexNumber): number to be checked
 
     Returns:
         check (bool): True if abs(x) < 10 and False otherwise
@@ -14,12 +17,15 @@ def check_abs(x: ComplexType):
     return abs(x) < 10
 
 
+SampleType = list[list[int]]
+
+
 @pytest.fixture
-def sample_data():
+def sample_data() -> SampleType:
     return [[1, 0], [0, 1], [10, 0], [3, 1], [2, 2], [15, 6], [13, 11], [60, 5]]
 
 
-def test_load_json(sample_data):
+def test_load_json(sample_data: SampleType) -> None:
     """
     +----------------------+--------+
     | Input (sample_data)  | Output |
@@ -32,7 +38,7 @@ def test_load_json(sample_data):
     assert manager.count == 8
 
 
-def test_add_number():
+def test_add_number() -> None:
     """
     +----------------------------------------+--------+
     | Input (ComplexNumber(5, 3), 5, (5, 3)) | Output |
@@ -47,22 +53,22 @@ def test_add_number():
     assert manager.count == 3
 
 
-def test_remove_pos_number(sample_data):
+def test_remove_pos_number(sample_data: SampleType) -> None:
     """
     +------------------------------------------+--------+
     |           Input (sample_data)            | Output |
     +------------------------------------------+--------+
-    | ComplexNumber(60, 5) not in manager.list | False  |
+    | ComplexNumber(60, 5) not in manager.nlist | False  |
     +------------------------------------------+--------+
     """
     manager = ComplexManager()
     manager.load_json(sample_data)
-    assert ComplexNumber(60, 5) in manager.list
+    assert ComplexNumber(60, 5) in manager.nlist
     manager.remove_pos_number(7)
-    assert ComplexNumber(60, 5) not in manager.list
+    assert ComplexNumber(60, 5) not in manager.nlist
 
 
-def test_remove_seq_number(sample_data):
+def test_remove_seq_number(sample_data: SampleType) -> None:
     """
     +----------------------+--------+
     | Input (sample_data)  | Output |
@@ -77,25 +83,25 @@ def test_remove_seq_number(sample_data):
     assert manager.count == 0
 
 
-def test_replace_number(sample_data):
+def test_replace_number(sample_data: SampleType) -> None:
     """
     +------------------------------------------+--------+
     |           Input (sample_data)            | Output |
     +------------------------------------------+--------+
-    | ComplexNumber(60, 5) not in manager.list | False  |
-    | ComplexNumber(120, 3) in manager.list    | True   |
+    | ComplexNumber(60, 5) not in manager.nlist | False  |
+    | ComplexNumber(120, 3) in manager.nlist    | True   |
     +------------------------------------------+--------+
     """
     manager = ComplexManager()
     manager.load_json(sample_data)
     a, b = ComplexNumber(60, 5), ComplexNumber(120, 3)
-    assert a in manager.list
+    assert a in manager.nlist
     manager.replace_number(a, b)
-    assert a not in manager.list
-    assert b in manager.list
+    assert a not in manager.nlist
+    assert b in manager.nlist
 
 
-def test_sum_seq(sample_data):
+def test_sum_seq(sample_data: SampleType) -> None:
     """
     +-----------------------+---------------------+
     |  Input (sample_data)  |       Output        |
@@ -108,7 +114,7 @@ def test_sum_seq(sample_data):
     assert manager.sum_seq(0, 2) == ComplexNumber(1, 1)
 
 
-def test_prod_seq(sample_data):
+def test_prod_seq(sample_data: SampleType) -> None:
     """
     +------------------------+---------------------+
     |  Input (sample_data)   |       Output        |
@@ -121,7 +127,7 @@ def test_prod_seq(sample_data):
     assert manager.prod_seq(0, 2) == ComplexNumber(0, 1)
 
 
-def test_get_by_check(sample_data):
+def test_get_by_check(sample_data: SampleType) -> None:
     """
     +---------------------+--------+
     | Input (sample_data) | Output |
@@ -135,7 +141,7 @@ def test_get_by_check(sample_data):
     assert len(resp) == 4
 
 
-def test_filter_by_check(sample_data):
+def test_filter_by_check(sample_data: SampleType) -> None:
     """
     +----------------------+--------+
     | Input (sample_data)  | Output |

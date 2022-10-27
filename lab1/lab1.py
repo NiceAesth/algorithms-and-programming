@@ -27,14 +27,14 @@ for i in range(10):
 i = 0
 while i < 10:
     print(f"i: {i}")
-    i = i+1 
+    i = i+1
 """
-
 """
 x = int(input("Introduceti numarul: "))
 x = x + 1
 print(x)
 """
+from __future__ import annotations
 
 
 def ex_1():
