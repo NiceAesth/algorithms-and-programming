@@ -17,8 +17,12 @@ def clear() -> None:
 
 
 def read_int(text: str = "") -> int:
-    x = input(text)
-    return int(x)
+    try:
+        x = int(input(text))
+    except:
+        print("Invalid value specified. Try again.")
+        x = read_int(text)
+    return x
 
 
 def read_complex(text: str = "") -> ComplexNumber:
