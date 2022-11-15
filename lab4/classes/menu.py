@@ -203,7 +203,7 @@ class Menu:
             opt (int): ID of the option (indexed from 0)
         """
         terminal.clear()
-        if 0 <= opt <= len(self.__options):
+        if 0 <= opt <= len(self.__options) - 1:
             res = self.__options[opt].call()
             if self.__options[opt].print_result:
                 print(f"\n{res}\n")

@@ -1,0 +1,10 @@
+[tool.mypy]
+mypy_path = "./"
+files = ["classes", "helpers", "tests", "main.py"]
+disallow_untyped_defs = true
+disallow_any_unimported = true
+show_error_codes = true
+disable_error_code = ["has-type"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
