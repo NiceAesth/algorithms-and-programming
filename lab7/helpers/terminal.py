@@ -3,6 +3,9 @@ from __future__ import annotations
 import os
 from typing import Any
 
+from classes.lab import Lab
+from classes.student import Student
+
 __all__ = ["clear", "read_int", "read_subseq", "print_wait"]
 
 
@@ -23,14 +26,18 @@ def read_int(text: str = "") -> int:
     return x
 
 
-def read_subseq(list: list) -> list:
-    start = read_int("Enter the start position: ")
-    end = read_int("Enter the end position: ")
-    try:
-        return list[start:end]
-    except:
-        print("Invalid start and end provided. Try again.")
-        return read_subseq(list)
+def read_student() -> Student:
+    sid: int = read_int("Enter ID: ")
+    name = input("Enter name: ")
+    group = read_int("Enter group: ")
+    return Student(sid, name, group)
+
+
+def read_lab() -> Lab:
+    lid = read_int("Enter ID: ")
+    description = input("Enter description: ")
+    deadline = read_int("Enter deadline: ")
+    return Lab(lid, description, deadline)
 
 
 def print_wait(*args: Any, **kwargs: Any) -> None:

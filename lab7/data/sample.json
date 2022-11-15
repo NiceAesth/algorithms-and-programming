@@ -1,0 +1,83 @@
+{
+    "students": [
+        {
+            "sid": 1,
+            "name": "John",
+            "group": 311
+        },
+        {
+            "sid": 2,
+            "name": "Mary",
+            "group": 311
+        },
+        {
+            "sid": 3,
+            "name": "Peter",
+            "group": 312
+        },
+        {
+            "sid": 4,
+            "name": "Ann",
+            "group": 312
+        }
+    ],
+    "labs": [
+        {
+            "lid": 1,
+            "description": "Lab 1",
+            "deadline": "2022-11-23"
+        },
+        {
+            "lid": 2,
+            "description": "Lab 2",
+            "deadline": "2022-11-30"
+        },
+        {
+            "lid": 3,
+            "description": "Lab 3",
+            "deadline": "2022-12-07"
+        }
+    ],
+    "submissions": [
+        {
+            "sid": 1,
+            "lid": 1,
+            "grade": 10
+        },
+        {
+            "sid": 1,
+            "lid": 2,
+            "grade": 9
+        },
+        {
+            "sid": 2,
+            "lid": 1,
+            "grade": 8
+        },
+        {
+            "sid": 2,
+            "lid": 2,
+            "grade": 7
+        },
+        {
+            "sid": 3,
+            "lid": 1,
+            "grade": 6
+        },
+        {
+            "sid": 3,
+            "lid": 2,
+            "grade": 5
+        },
+        {
+            "sid": 4,
+            "lid": 1,
+            "grade": 4
+        },
+        {
+            "sid": 4,
+            "lid": 2,
+            "grade": 3
+        }
+    ]
+}
