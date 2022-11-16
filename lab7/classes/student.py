@@ -7,6 +7,14 @@ __all__ = ["Student"]
 
 @dataclass
 class Student:
+    """Student class
+
+    Attributes:
+        sid (int): Student ID
+        name (str): Student name
+        group (int): Student group
+    """
+
     sid: int
     name: str
     group: int

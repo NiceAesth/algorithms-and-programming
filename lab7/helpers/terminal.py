@@ -4,9 +4,17 @@ import os
 from typing import Any
 
 from classes.lab import Lab
+from classes.lab import Problem
 from classes.student import Student
 
-__all__ = ["clear", "read_int", "read_subseq", "print_wait"]
+__all__ = [
+    "clear",
+    "read_int",
+    "read_student",
+    "read_lab",
+    "read_lab_problem",
+    "print_wait",
+]
 
 
 def clear() -> None:
@@ -35,9 +43,19 @@ def read_student() -> Student:
 
 def read_lab() -> Lab:
     lid = read_int("Enter ID: ")
-    description = input("Enter description: ")
-    deadline = read_int("Enter deadline: ")
-    return Lab(lid, description, deadline)
+    return Lab(lid)
+
+
+def read_lab_problem() -> Lab:
+    x = input("Enter problem ID: (lid_pid) ")
+    name = input("Enter name: ")
+    deadline = input("Enter deadline: ")
+    lid, pid = x.split("_")
+    try:
+        return int(lid), Problem(int(pid), name, deadline)
+    except:
+        print("Invalid value specified. Try again.")
+        return read_lab_problem()
 
 
 def print_wait(*args: Any, **kwargs: Any) -> None:
