@@ -2,8 +2,8 @@
 ## P2. Gestiune laboratoare studenți
 ### Scrieți o aplicație pentru gestiunea notelor și a problemelor de laborator pentru o disciplină.
 1. Aplicația gestionează:
-- studenți: <studentID>,<nume>,<grup>
-- problemă laborator: <număr laborator_număr problemă>,<descriere>, <deadline>
+- studenți: \<studentID>, \<nume>, \<grup>
+- problemă laborator: \<număr laborator_număr problemă>, \<descriere>, \<deadline>
 2. Creați o aplicație care permite:
 - gestiunea listei de studenți și probleme de laborator.
 - adaugă, șterge, modifică, lista de studenți, listă de probleme
