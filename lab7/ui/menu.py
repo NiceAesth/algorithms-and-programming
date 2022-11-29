@@ -5,8 +5,9 @@ from typing import Callable
 
 from helpers import data
 from helpers import terminal
-
-from .manager import AppManager
+from services import LabService
+from services import StudentService
+from services import SubmissionService
 
 
 __all__ = ["MainMenu"]
@@ -33,10 +34,18 @@ class MenuOption:
 class Menu:
     """Menu class"""
 
-    def __init__(self, manager: AppManager, title: str = "Menu") -> None:
+    def __init__(
+        self,
+        lab_service: LabService,
+        student_service: StudentService,
+        submission_service: SubmissionService,
+        title: str = "Menu",
+    ) -> None:
         self.title: str = title
         self.options: list[MenuOption] = []
-        self.manager: AppManager = manager
+        self.lab_service: LabService = lab_service
+        self.student_service: StudentService = student_service
+        self.submission_service: SubmissionService = submission_service
         self.__running: bool = False
 
     def __populate_options(self) -> None:
@@ -97,8 +106,18 @@ class Menu:
 class StudentMenu(Menu):
     """Student menu class"""
 
-    def __init__(self, manager: AppManager) -> None:
-        super().__init__(manager, "Manage students")
+    def __init__(
+        self,
+        lab_service: LabService,
+        student_service: StudentService,
+        submission_service: SubmissionService,
+    ) -> None:
+        super().__init__(
+            lab_service,
+            student_service,
+            submission_service,
+            "Manage students",
+        )
         self.__populate_options()
 
     def __populate_options(self) -> None:
@@ -106,35 +125,37 @@ class StudentMenu(Menu):
             (
                 MenuOption(
                     "List students",
-                    lambda: self.manager.get_students(),
+                    lambda: self.student_service.get_students(),
                     True,
                 ),
                 MenuOption(
                     "Add student",
-                    lambda: self.manager.add_student(terminal.read_student()),
+                    lambda: self.student_service.add_student(terminal.read_student()),
                 ),
                 MenuOption(
                     "Search student by ID",
-                    lambda: self.manager.get_student_by_id(
+                    lambda: self.student_service.get_student_by_id(
                         terminal.read_int("Enter ID: "),
                     ),
                     True,
                 ),
                 MenuOption(
                     "Search student by name",
-                    lambda: self.manager.search_student_by_name(input("Enter name: ")),
+                    lambda: self.student_service.search_student_by_name(
+                        input("Enter name: "),
+                    ),
                     True,
                 ),
                 MenuOption(
                     "Search student by group",
-                    lambda: self.manager.search_student_by_group(
+                    lambda: self.student_service.search_student_by_group(
                         terminal.read_int("Enter group: "),
                     ),
                     True,
                 ),
                 MenuOption(
                     "Get failing students",
-                    self.manager.get_failing_students,
+                    self.submission_service.get_failing_students,
                     True,
                 ),
                 MenuOption("Back", self.exit),
@@ -145,8 +166,18 @@ class StudentMenu(Menu):
 class ProblemMenu(Menu):
     """Problem menu class"""
 
-    def __init__(self, manager: AppManager) -> None:
-        super().__init__(manager, "Manage problems")
+    def __init__(
+        self,
+        lab_service: LabService,
+        student_service: StudentService,
+        submission_service: SubmissionService,
+    ) -> None:
+        super().__init__(
+            lab_service,
+            student_service,
+            submission_service,
+            "Manage problems",
+        )
         self.__populate_options()
 
     def __populate_options(self) -> None:
@@ -154,11 +185,11 @@ class ProblemMenu(Menu):
             (
                 MenuOption(
                     "Add problem",
-                    lambda: self.manager.add_problem(*terminal.read_lab_problem()),
+                    lambda: self.lab_service.add_problem(*terminal.read_lab_problem()),
                 ),
                 MenuOption(
                     "Assign problem to student",
-                    lambda: self.manager.assign_lab_problem(
+                    lambda: self.submission_service.assign_lab_problem(
                         terminal.read_int("Enter student ID: "),
                         terminal.read_int("Enter lab ID: "),
                         terminal.read_int("Enter problem ID: "),
@@ -166,7 +197,7 @@ class ProblemMenu(Menu):
                 ),
                 MenuOption(
                     "Grade problem for student",
-                    lambda: self.manager.assign_lab_problem(
+                    lambda: self.submission_service.assign_lab_problem(
                         terminal.read_int("Enter student ID: "),
                         terminal.read_int("Enter lab ID: "),
                         terminal.read_int("Enter problem ID: "),
@@ -175,7 +206,7 @@ class ProblemMenu(Menu):
                 ),
                 MenuOption(
                     "Search problem by ID",
-                    lambda: self.manager.get_problem_by_ids(
+                    lambda: self.lab_service.get_problem_by_ids(
                         terminal.read_int("Enter lab ID: "),
                         terminal.read_int("Enter ID: "),
                     ),
@@ -183,7 +214,7 @@ class ProblemMenu(Menu):
                 ),
                 MenuOption(
                     "Search problem by description",
-                    lambda: self.manager.search_problem_by_description(
+                    lambda: self.lab_service.search_problem_by_description(
                         input("Enter description: "),
                     ),
                     True,
@@ -196,9 +227,23 @@ class ProblemMenu(Menu):
 class LabMenu(Menu):
     """Lab menu class"""
 
-    def __init__(self, manager: AppManager) -> None:
-        super().__init__(manager, "Manage labs")
-        self.__problem_menu = ProblemMenu(manager)
+    def __init__(
+        self,
+        lab_service: LabService,
+        student_service: StudentService,
+        submission_service: SubmissionService,
+    ) -> None:
+        super().__init__(
+            lab_service,
+            student_service,
+            submission_service,
+            "Manage labs",
+        )
+        self.__problem_menu = ProblemMenu(
+            lab_service,
+            student_service,
+            submission_service,
+        )
         self.__populate_options()
 
     def __populate_options(self) -> None:
@@ -206,16 +251,18 @@ class LabMenu(Menu):
             (
                 MenuOption(
                     "List labs",
-                    lambda: self.manager.get_labs(),
+                    lambda: self.lab_service.get_labs(),
                     True,
                 ),
                 MenuOption(
                     "Add lab",
-                    lambda: self.manager.add_lab(terminal.read_lab()),
+                    lambda: self.lab_service.add_lab(terminal.read_lab()),
                 ),
                 MenuOption(
                     "Search lab by ID",
-                    lambda: self.manager.get_lab_by_id(terminal.read_int("Enter ID: ")),
+                    lambda: self.lab_service.get_lab_by_id(
+                        terminal.read_int("Enter ID: "),
+                    ),
                     True,
                 ),
                 MenuOption(
@@ -224,7 +271,7 @@ class LabMenu(Menu):
                 ),
                 MenuOption(
                     "Get lab grades",
-                    lambda: self.manager.get_lab_grades_str(
+                    lambda: self.submission_service.get_lab_grades_str(
                         terminal.read_int("Enter lab ID: "),
                     ),
                     True,
@@ -237,18 +284,34 @@ class LabMenu(Menu):
 class MainMenu(Menu):
     """Main menu class"""
 
-    def __init__(self, manager: AppManager) -> None:
-        super().__init__(manager, "Main menu")
-        self.__student_menu = StudentMenu(self.manager)
-        self.__lab_menu = LabMenu(self.manager)
+    def __init__(
+        self,
+        lab_service: LabService,
+        student_service: StudentService,
+        submission_service: SubmissionService,
+    ) -> None:
+        super().__init__(lab_service, student_service, submission_service, "Main menu")
+        self.__student_menu = StudentMenu(
+            lab_service,
+            student_service,
+            submission_service,
+        )
+        self.__lab_menu = LabMenu(lab_service, student_service, submission_service)
         self.__populate_options()
+
+    def load_json(self) -> None:
+        """Loads data from JSON files"""
+        raw_data = data.load_sample()
+        self.lab_service.load_json(raw_data["labs"])
+        self.student_service.load_json(raw_data["students"])
+        self.submission_service.load_json(raw_data["submissions"])
 
     def __populate_options(self) -> None:
         self.options.extend(
             (
                 MenuOption(
                     "Load sample data",
-                    lambda: self.manager.load_json(data.load_sample()),
+                    lambda: self.load_json(),
                 ),
                 MenuOption(
                     "Manage students",

@@ -4,4 +4,4 @@ import sys
 
 sys.path.append("..")
 
-from classes import *
+from entities import *

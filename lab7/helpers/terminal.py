@@ -3,9 +3,9 @@ from __future__ import annotations
 import os
 from typing import Any
 
-from classes.lab import Lab
-from classes.lab import Problem
-from classes.student import Student
+from entities import Lab
+from entities import Problem
+from entities import Student
 
 __all__ = [
     "clear",
