@@ -1,7 +1,11 @@
 from __future__ import annotations
 
+import dataclasses
+import json
+
 from entities import Lab
 from entities import Problem
+from helpers.data import DateTimeEncoder
 
 
 class LabRepository:
@@ -157,3 +161,90 @@ class LabRepository:
         for lab in self.__labs:
             if lab.lid == lid:
                 lab.problems.remove(self.get_problem_by_ids(lid, pid))
+
+
+class LabFileRepository(LabRepository):
+    """Repository for lab operations using a file."""
+
+    def __init__(self, filename: str) -> None:
+        """Initialize the lab repository.
+
+        Args:
+            filename (str): name of the file
+        """
+        super().__init__()
+        self.__filename = filename
+        self.__load_file()
+
+    def __load_file(self) -> None:
+        """Loads the data from the file."""
+        try:
+            with open(self.__filename) as file:
+                self.load_json(json.load(file))
+        except FileNotFoundError:
+            pass
+
+    def __save_file(self) -> None:
+        """Saves the data to the file."""
+        with open(self.__filename, "w") as file:
+            json.dump(
+                [dataclasses.asdict(x) for x in self.get_labs()],
+                file,
+                indent=4,
+                cls=DateTimeEncoder,
+            )
+
+    def add_lab(self, obj: Lab | dict) -> Lab:
+        """Adds a lab to the list
+
+        Args:
+            obj (Lab | dict): lab data
+
+        Returns:
+            Lab: the added lab
+        """
+        lab = super().add_lab(obj)
+        self.__save_file()
+        return lab
+
+    def delete_lab(self, obj: Lab | dict) -> None:
+        """Deletes a lab from the list
+
+        Args:
+            obj (Lab | dict): lab data
+        """
+        super().delete_lab(obj)
+        self.__save_file()
+
+    def delete_lab_by_id(self, lid: int) -> None:
+        """Deletes a lab from the list by ID
+
+        Args:
+            lid (int): lab ID
+        """
+        super().delete_lab_by_id(lid)
+        self.__save_file()
+
+    def add_problem(self, lid: int, obj: Problem | dict) -> Problem:
+        """Adds a problem to the list
+
+        Args:
+            lid (int): ID of the lab
+            obj (Problem | dict): problem data
+
+        Returns:
+            Problem: the added problem
+        """
+        problem = super().add_problem(lid, obj)
+        self.__save_file()
+        return problem
+
+    def delete_problem_by_ids(self, lid: int, pid: int) -> None:
+        """Deletes a problem from the list by IDs
+
+        Args:
+            lid (int): lab ID
+            pid (int): problem ID
+        """
+        super().delete_problem_by_ids(lid, pid)
+        self.__save_file()

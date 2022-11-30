@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import dataclasses
+import json
+
 from entities import Student
 
 
@@ -73,3 +76,49 @@ class StudentRepository:
             obj (Student | dict): student data
         """
         self.__students.remove(Student.from_type(obj))
+
+
+class StudentFileRepository(StudentRepository):
+    """Student file repository class."""
+
+    def __init__(self, filename: str):
+        """Initialize the student file repository.
+
+        Args:
+            filename (str): name of the file
+        """
+        super().__init__()
+        self.__filename = filename
+        self.load()
+
+    def load(self) -> None:
+        """Loads data from the file."""
+        with open(self.__filename) as file:
+            self.load_json(json.load(file))
+
+    def save(self) -> None:
+        """Saves data to the file."""
+        with open(self.__filename, "w") as file:
+            json.dump([dataclasses.asdict(x) for x in self.get_students()], file)
+
+    def add_student(self, obj: Student | dict) -> Student:
+        """Adds a student to the list
+
+        Args:
+            obj (Student | dict): student data
+
+        Returns:
+            Student: the added student
+        """
+        student = super().add_student(obj)
+        self.save()
+        return student
+
+    def delete_student(self, obj: Student | dict) -> None:
+        """Deletes a student from the list
+
+        Args:
+            obj (Student | dict): student data
+        """
+        super().delete_student(obj)
+        self.save()

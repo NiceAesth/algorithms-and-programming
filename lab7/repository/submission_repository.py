@@ -1,6 +1,10 @@
 from __future__ import annotations
 
+import dataclasses
+import json
+
 from entities import Submission
+from helpers.data import DateTimeEncoder
 
 
 class SubmissionRepository:
@@ -52,3 +56,48 @@ class SubmissionRepository:
             submission (Submission): submission to remove
         """
         self.__submissions.remove(submission)
+
+
+class SubmissionFileRepository(SubmissionRepository):
+    """Submission file repository"""
+
+    def __init__(self, filename: str) -> None:
+        """Initialize the submission file repository
+
+        Args:
+            filename (str): name of the file
+        """
+        super().__init__()
+        self.__filename = filename
+        self.__load()
+
+    def __load(self) -> None:
+        """Loads data from the file"""
+        try:
+            with open(self.__filename) as f:
+                self.load_json(json.load(f))
+        except FileNotFoundError:
+            pass
+
+    def __save(self) -> None:
+        """Saves data to the file"""
+        with open(self.__filename, "w") as file:
+            json.dump([dataclasses.asdict(x) for x in self.get_submissions()], file)
+
+    def add_submission(self, submission: Submission) -> None:
+        """Adds a submission
+
+        Args:
+            submission (Submission): submission to add
+        """
+        super().add_submission(submission)
+        self.__save()
+
+    def remove_submission(self, submission: Submission) -> None:
+        """Removes a submission
+
+        Args:
+            submission (Submission): submission to remove
+        """
+        super().remove_submission(submission)
+        self.__save()
