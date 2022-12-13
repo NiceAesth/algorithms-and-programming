@@ -50,8 +50,8 @@ def read_lab_problem() -> Lab:
     x = input("Enter problem ID: (lid_pid) ")
     name = input("Enter name: ")
     deadline = input("Enter deadline: ")
-    lid, pid = x.split("_")
     try:
+        lid, pid = x.split("_")
         return int(lid), Problem(int(pid), name, deadline)
     except:
         print("Invalid value specified. Try again.")

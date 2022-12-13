@@ -8,4 +8,4 @@ disable_error_code = ["has-type"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = ["--cov"]
+addopts = ["--cov", "--cov-report=html"]
