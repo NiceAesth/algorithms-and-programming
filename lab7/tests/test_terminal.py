@@ -18,6 +18,7 @@ def test_clear(monkeypatch):
 def test_read_int(monkeypatch):
     """Test read_int function."""
     index, data = 0, ["a", "1"]
+    index
     local = locals()
     monkeypatch.setattr(
         "builtins.input",
@@ -48,6 +49,7 @@ def test_read_lab_problem(monkeypatch):
         "name",
         "2021-01-01",
     ]
+    index
     local = locals()
     monkeypatch.setattr(
         "builtins.input",
