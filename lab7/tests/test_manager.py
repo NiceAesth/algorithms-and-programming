@@ -174,6 +174,8 @@ def test_add_student(sample_data, services):
     student_service.add_student(Student(6, "Alice", 314))
     assert student_service.student_count == 6
     assert student_service.get_student_by_id(6).name == "Alice"
+    with pytest.raises(ValueError):
+        student_service.add_student(Student(6, "Alice", 314))
 
 
 def test_delete_student_by_id(sample_data, services):
@@ -232,7 +234,24 @@ def test_add_lab(sample_data, services):
     lab_service, student_service, submission_service = services
     load_json(sample_data, lab_service, student_service, submission_service)
     lab_service.add_lab(Lab(3))
+    with pytest.raises(ValueError):
+        lab_service.add_lab(Lab(3))
     assert lab_service.lab_count == 3
+
+
+def test_delete_lab(sample_data, services):
+    """
+    +------------------+----------+
+    |      Input       |  Output  |
+    +------------------+----------+
+    | manager.lab_count|        1 |
+    +------------------+----------+
+    """
+    lab_service, student_service, submission_service = services
+    load_json(sample_data, lab_service, student_service, submission_service)
+    lab_service.delete_lab(lab_service.get_lab_by_id(1))
+    assert lab_service.lab_count == 1
+    assert lab_service.get_lab_by_id(1) is None
 
 
 def test_delete_lab_by_id(sample_data, services):
@@ -302,6 +321,10 @@ def test_add_problem(sample_data, services):
     problem = lab_service.get_problem_by_ids(1, 4)
     assert type(problem.deadline) is datetime.datetime
     assert lab_service.problem_count == 6
+    with pytest.raises(ValueError):
+        lab_service.add_problem(1, Problem(4, "Problem 4", "2022-10-10"))
+    with pytest.raises(ValueError):
+        lab_service.add_problem(3, Problem(4, "Problem 4", "2022-10-10"))
 
 
 def test_search_problem_by_description(sample_data, services):
@@ -368,6 +391,22 @@ def test_get_lab_submissions(sample_data, services):
     assert len(submission_service.get_lab_submissions(3)) == 0
 
 
+def test_delete_submission(sample_data, services):
+    """
+    +-----------------------------+----------+
+    |        Input                |  Output  |
+    +-----------------------------+----------+
+    | len(manager.get_submissions)|        5 |
+    +-----------------------------+----------+
+    """
+    lab_service, student_service, submission_service = services
+    load_json(sample_data, lab_service, student_service, submission_service)
+    submission_service.delete_submission(1, 1, 1)
+    assert len(submission_service.get_submissions()) == 5
+    with pytest.raises(ValueError):
+        submission_service.delete_submission(1, 1, 1)
+
+
 def test_assign_lab_problem(sample_data, services):
     """
     +------------------------------------+----------+
@@ -378,8 +417,14 @@ def test_assign_lab_problem(sample_data, services):
     """
     lab_service, student_service, submission_service = services
     load_json(sample_data, lab_service, student_service, submission_service)
-    submission_service.assign_lab_problem(1, 1, 1)
-    assert len(submission_service.get_lab_submissions(1)) == 5
+    submission_service.assign_lab_problem(4, 1, 1)
+    assert len(submission_service.get_lab_submissions(1)) == 6
+    with pytest.raises(ValueError):
+        submission_service.assign_lab_problem(6, 1, 1)
+    with pytest.raises(ValueError):
+        submission_service.assign_lab_problem(1, 3, 1)
+    with pytest.raises(ValueError):
+        submission_service.assign_lab_problem(1, 1, 6)
 
 
 def test_get_student_average(sample_data, services):
@@ -403,3 +448,16 @@ def test_get_student_average(sample_data, services):
     assert submission_service.get_student_average(4) == 8
     assert submission_service.get_student_average(5) == 3.5
     assert submission_service.get_student_average(6) == None
+
+
+def test_get_lab_grades_str(sample_data, services):
+    """
+    +----------------------------------+--------+
+    |             Input                | Output |
+    +----------------------------------+--------+
+    | manager.get_lab_grades_string(1) | string |
+    +----------------------------------+--------+
+    """
+    lab_service, student_service, submission_service = services
+    load_json(sample_data, lab_service, student_service, submission_service)
+    assert submission_service.get_lab_grades_str(1)

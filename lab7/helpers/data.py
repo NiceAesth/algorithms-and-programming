@@ -11,6 +11,7 @@ class DateTimeEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, (datetime.date, datetime.datetime)):
             return obj.isoformat()
+        raise TypeError(f"Type {type(obj)} not serializable")
 
 
 def load_sample() -> list:

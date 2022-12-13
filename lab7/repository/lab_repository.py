@@ -88,14 +88,6 @@ class LabRepository:
         """
         self.__labs.remove(Lab.from_type(obj))
 
-    def delete_lab_by_id(self, lid: int) -> None:
-        """Deletes a lab from the list by ID
-
-        Args:
-            lid (int): lab ID
-        """
-        self.__labs.remove(self.get_lab_by_id(lid))
-
     def get_problems(self) -> list[Problem]:
         """Gets the list of all problems
 
@@ -178,11 +170,8 @@ class LabFileRepository(LabRepository):
 
     def __load_file(self) -> None:
         """Loads the data from the file."""
-        try:
-            with open(self.__filename) as file:
-                self.load_json(json.load(file))
-        except FileNotFoundError:
-            pass
+        with open(self.__filename) as file:
+            self.load_json(json.load(file))
 
     def __save_file(self) -> None:
         """Saves the data to the file."""
@@ -214,15 +203,6 @@ class LabFileRepository(LabRepository):
             obj (Lab | dict): lab data
         """
         super().delete_lab(obj)
-        self.__save_file()
-
-    def delete_lab_by_id(self, lid: int) -> None:
-        """Deletes a lab from the list by ID
-
-        Args:
-            lid (int): lab ID
-        """
-        super().delete_lab_by_id(lid)
         self.__save_file()
 
     def add_problem(self, lid: int, obj: Problem | dict) -> Problem:

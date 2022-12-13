@@ -41,21 +41,21 @@ class SubmissionRepository:
         """
         return self.__submissions
 
-    def add_submission(self, submission: Submission) -> None:
+    def add_submission(self, obj: Submission | dict) -> None:
         """Adds a submission
 
         Args:
-            submission (Submission): submission to add
+            obj (Submission | dict): submission to add
         """
-        self.__submissions.append(submission)
+        self.__submissions.append(Submission.from_type(obj))
 
-    def remove_submission(self, submission: Submission) -> None:
-        """Removes a submission
+    def delete_submission(self, obj: Submission | dict) -> None:
+        """Deletes a submission
 
         Args:
-            submission (Submission): submission to remove
+            obj (Submission | dict): submission to delete
         """
-        self.__submissions.remove(submission)
+        self.__submissions.remove(Submission.from_type(obj))
 
 
 class SubmissionFileRepository(SubmissionRepository):
@@ -73,11 +73,8 @@ class SubmissionFileRepository(SubmissionRepository):
 
     def __load(self) -> None:
         """Loads data from the file"""
-        try:
-            with open(self.__filename) as f:
-                self.load_json(json.load(f))
-        except FileNotFoundError:
-            pass
+        with open(self.__filename) as f:
+            self.load_json(json.load(f))
 
     def __save(self) -> None:
         """Saves data to the file"""
@@ -93,11 +90,11 @@ class SubmissionFileRepository(SubmissionRepository):
         super().add_submission(submission)
         self.__save()
 
-    def remove_submission(self, submission: Submission) -> None:
+    def delete_submission(self, submission: Submission) -> None:
         """Removes a submission
 
         Args:
             submission (Submission): submission to remove
         """
-        super().remove_submission(submission)
+        super().delete_submission(submission)
         self.__save()

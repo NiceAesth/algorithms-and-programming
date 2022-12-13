@@ -29,7 +29,7 @@ class SubmissionService:
         Returns:
             int: number of submissions
         """
-        return len(self.__repository.get_submissions())
+        return self.__repository.submission_count
 
     def load_json(self, obj: list) -> None:
         """Loads data from a JSON object
@@ -47,7 +47,7 @@ class SubmissionService:
         """
         return self.__repository.get_submissions()
 
-    def remove_submission(self, sid: int, lid: int, pid: int) -> None:
+    def delete_submission(self, sid: int, lid: int, pid: int) -> None:
         """Removes a submission
 
         Args:
@@ -58,15 +58,15 @@ class SubmissionService:
         submission = self.get_submission(sid, lid, pid)
         if submission is None:
             raise ValueError("Submission does not exist")
-        self.__repository.remove_submission(submission)
+        self.__repository.delete_submission(submission)
 
-    def add_submission(self, submission: Submission) -> None:
+    def add_submission(self, obj: Submission | dict) -> None:
         """Adds a submission
 
         Args:
-            submission (Submission): submission to add
+            obj (Submission | dict): submission to add
         """
-        self.__repository.add_submission(submission)
+        self.__repository.add_submission(obj)
 
     def get_submission(self, sid: int, lid: int, pid: int) -> Submission | None:
         """Returns a submission with the given student and lab IDs
@@ -113,7 +113,7 @@ class SubmissionService:
         if self.lab_service.get_problem_by_ids(lid, pid) is None:
             raise ValueError("Problem with the given ID does not exist")
         try:
-            self.remove_submission(sid, lid, pid)
+            self.delete_submission(sid, lid, pid)
         except ValueError:
             pass
 

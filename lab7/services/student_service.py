@@ -45,10 +45,7 @@ class StudentService:
         Returns:
             student (Student): Student with the given ID
         """
-        for student in self.__repository.get_students():
-            if student.sid == sid:
-                return student
-        return None
+        return self.__repository.get_student_by_id(sid)
 
     def search_student_by_group(self, group: int) -> list[Student]:
         """Returns a list of students in the given group
