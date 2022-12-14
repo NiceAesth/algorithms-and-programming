@@ -50,6 +50,20 @@ def insertion_sort(data):
     return data
 
 
+def insert_element(data, value):
+    if len(data) == 0:
+        return [value]
+    if data[0] > value:
+        return [value] + data
+    return data[:1] + insert_element(data[1:], value)
+
+
+def recursive_insertion_sort(data):
+    if len(data) <= 1:
+        return data
+    return insert_element(recursive_insertion_sort(data[1:]), data[0])
+
+
 def bubble_sort(data):
     ok = True
     n = len(data)
@@ -74,4 +88,5 @@ if __name__ == "__main__":
     print(recursive_exponential_search(data, 11))
     print(select_sort(new_data))
     print(insertion_sort(new_data))
+    print(recursive_insertion_sort(new_data))
     print(bubble_sort(new_data))
