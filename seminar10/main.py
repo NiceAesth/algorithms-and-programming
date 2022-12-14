@@ -52,12 +52,14 @@ def insertion_sort(data):
 
 def bubble_sort(data):
     ok = True
+    n = len(data)
     while ok:
         ok = False
-        for i in range(len(data) - 1):
+        for i in range(n - 1):
             if data[i] > data[i + 1]:
                 data[i], data[i + 1] = data[i + 1], data[i]
                 ok = True
+        n -= 1
     return data
 
 
